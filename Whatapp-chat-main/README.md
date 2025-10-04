@@ -18,6 +18,6 @@ A **Python & Streamlit app** to analyze your WhatsApp chat exports. Get insights
 
 ## **Demo**
 
-[[Insert your deployed Streamlit app link here](whatsapp-chat-analyser ∙ main ∙ Whatapp-chat-main/app.py)]  
+[[Insert your deployed Streamlit app link here](https://whatsapp-chat-analyser-4b6ubxf63bzlvrqrw7f9va.streamlit.app/)]  
 
 ---
