@@ -14,10 +14,3 @@ A **Python & Streamlit app** to analyze your WhatsApp chat exports. Get insights
 - ✅ Emoji analysis.  
 - ✅ Handles group chats and private chats.  
 
----
-
-## **Demo**
-
-[[Insert your deployed Streamlit app link here](https://whatsapp-chat-analyser-4b6ubxf63bzlvrqrw7f9va.streamlit.app/)]  
-
----
