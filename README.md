@@ -1,4 +1,5 @@
 # WhatsApp Chat Analyzer
+
 https://whatsapp-chat-analyser-4b6ubxf63bzlvrqrw7f9va.streamlit.app/
 
 A **Python & Streamlit app** to analyze your WhatsApp chat exports. Get insights on message frequency, user activity, most active times, word clouds, heatmaps, and more.  
