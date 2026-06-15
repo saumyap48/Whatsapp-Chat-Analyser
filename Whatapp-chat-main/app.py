@@ -1,4 +1,4 @@
-```python
+
 import streamlit as st
 import preprocessor
 import helper
@@ -224,4 +224,3 @@ if uploaded_file is not None:
 
         else:
             st.write("No emojis found.")
-```
