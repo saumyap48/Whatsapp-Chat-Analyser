@@ -1,38 +1,35 @@
-# Python cache
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
+*$py.class
+*.pyc
 
 # Virtual environments
 venv/
 .venv/
 env/
 ENV/
+env.bak/
+venv.bak/
 
-# Environment variables
-.env
-.env.*
-
-# IDE files
+# IDE and Editor files
 .idea/
 .vscode/
 *.swp
 *.swo
 
-# OS files
-.DS_Store
-Thumbs.db
-
-# Streamlit local config (not needed in repo)
-# .streamlit/secrets.toml
-
-# Dev container
+# Devcontainer
 .devcontainer/
 
-# Screenshots and media (not part of application)
-Screenshot*.png
-*.jpg
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Nested zip-extracted folder (not the deployment root)
+# Legacy / nested folders
+Whatapp-chat-main/
 Whatsapp-Chat-Analyser-main/
