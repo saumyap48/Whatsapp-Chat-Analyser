@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="https://whatsapp-chat-analyser-4b6ubxf63bzlvrqrw7f9va.streamlit.app/">
+  <a href="https://whatsapp-chat-analyser-bbsovk2yyknoynfeulappe.streamlit.app/">
     <img src="https://img.shields.io/badge/🚀%20Live%20App-Streamlit%20Cloud-25D366?style=for-the-badge&logo=streamlit&logoColor=white" alt="Live App"/>
   </a>
   <img src="https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
@@ -18,7 +18,7 @@
 
 ## 🚀 Live Demo
 
-👉 **[Try the WhatsApp Chat Analyzer Live](https://whatsapp-chat-analyser-4b6ubxf63bzlvrqrw7f9va.streamlit.app/)**
+👉 **[Try the WhatsApp Chat Analyzer Live](https://whatsapp-chat-analyser-bbsovk2yyknoynfeulappe.streamlit.app/)**
 
 No installation needed. Upload your WhatsApp `.txt` export and get instant analysis.
 
@@ -111,7 +111,7 @@ Deployed on **Streamlit Community Cloud** — zero infrastructure needed.
 | **Repository** | `saumyap48/Whatsapp-Chat-Analyser` |
 | **Branch** | `main` |
 | **Main file** | `app.py` |
-| **Live URL** | [https://whatsapp-chat-analyser-4b6ubxf63bzlvrqrw7f9va.streamlit.app/](https://whatsapp-chat-analyser-4b6ubxf63bzlvrqrw7f9va.streamlit.app/) |
+| **Live URL** | [https://whatsapp-chat-analyser-bbsovk2yyknoynfeulappe.streamlit.app/](https://whatsapp-chat-analyser-bbsovk2yyknoynfeulappe.streamlit.app/) |
 
 ---
 
