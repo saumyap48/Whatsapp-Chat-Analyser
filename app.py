@@ -11,27 +11,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling for WhatsApp Accent & Google Material Symbols Font
+# Scoped styling purely for custom text elements (no DOM overrides or @import)
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
-    
-    span[data-testid="stIconMaterial"] {
-        font-family: 'Material Symbols Rounded', sans-serif !important;
-        font-style: normal;
-        font-weight: normal;
-        display: inline-block;
-        line-height: 1;
-        text-transform: none;
-        letter-spacing: normal;
-        word-wrap: normal;
-        white-space: nowrap;
-        direction: ltr;
-        -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
     .main-title {
         color: #075E54;
         font-size: 2.2rem;
@@ -42,11 +24,6 @@ st.markdown("""
         color: #546E7A;
         font-size: 1.05rem;
         margin-bottom: 1.5rem;
-    }
-    div[data-testid="stMetricValue"] {
-        color: #128C7E;
-        font-size: 1.8rem;
-        font-weight: 600;
     }
     </style>
 """, unsafe_allow_html=True)
