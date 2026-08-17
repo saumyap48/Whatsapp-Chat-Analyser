@@ -11,30 +11,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Scoped styling purely for custom text elements (no DOM overrides or @import)
-st.markdown("""
-    <style>
-    .main-title {
-        color: #075E54;
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-    .sub-text {
-        color: #546E7A;
-        font-size: 1.05rem;
-        margin-bottom: 1.5rem;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 st.sidebar.title("💬 WhatsApp Chat Analyzer")
 
 uploaded_file = st.sidebar.file_uploader("Choose a WhatsApp export file (.txt)", type=["txt"])
 
 if uploaded_file is None:
-    st.markdown('<div class="main-title">WhatsApp Chat Analyzer</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-text">Gain instant insights, timelines, activity patterns, word clouds, and emoji stats from your exported WhatsApp chats.</div>', unsafe_allow_html=True)
+    st.title("💬 WhatsApp Chat Analyzer")
+    st.markdown("Gain instant insights, timelines, activity patterns, word clouds, and emoji stats from your exported WhatsApp chats.")
 
     st.info("👈 **Get Started**: Upload your exported WhatsApp chat `.txt` file using the sidebar on the left.")
 
@@ -69,7 +52,7 @@ else:
         if st.sidebar.button("Show Analysis"):
             
             # 1. Top Statistics
-            st.markdown('<div class="main-title">Top Statistics</div>', unsafe_allow_html=True)
+            st.title("Top Statistics")
             num_messages, words, num_media_messages, num_links = helper.fetch_stats(selected_user, df)
 
             col1, col2, col3, col4 = st.columns(4)
