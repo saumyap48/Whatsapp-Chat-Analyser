@@ -1,6 +1,10 @@
 <h1 align="center">💬 WhatsApp Chat Analyzer</h1>
 
 <p align="center">
+  🚀 <strong><a href="https://whatsapp-chat-analyser-bbsovk2yyknoynfeulappe.streamlit.app/">Try the WhatsApp Chat Analyzer Live</a></strong>
+</p>
+
+<p align="center">
   <strong>Gain powerful insights from your exported WhatsApp chats — instantly.</strong><br/>
   Message trends, user activity, word clouds, emoji stats, heatmaps, and more.
 </p>
@@ -18,9 +22,11 @@
 
 ## 🚀 Live Demo
 
-👉 **[Try the WhatsApp Chat Analyzer Live](https://whatsapp-chat-analyser-bbsovk2yyknoynfeulappe.streamlit.app/)**
+Try the fully deployed application:
 
-No installation needed. Upload your WhatsApp `.txt` export and get instant analysis.
+👉 **[WhatsApp Chat Analyzer](https://whatsapp-chat-analyser-bbsovk2yyknoynfeulappe.streamlit.app/)**
+
+The application is deployed using **Streamlit Community Cloud** with zero installation required.
 
 ---
 
@@ -44,17 +50,17 @@ No installation needed. Upload your WhatsApp `.txt` export and get instant analy
 
 | Technology | Purpose |
 |---|---|
-| **Python 3.9+** | Core language |
+| **Python 3.9+** | Core programming language |
 | **Streamlit** | Interactive web UI framework |
 | **Pandas** | Data manipulation and cleaning |
-| **Matplotlib & Seaborn** | Charts, timelines, and heatmaps |
+| **Matplotlib & Seaborn** | Visualizations, timelines, and heatmaps |
 | **WordCloud** | Word frequency cloud generation |
 | **URLExtract** | Link detection from messages |
 | **Emoji** | Emoji parsing and analysis |
 
 ---
 
-## ⚙️ Run Locally
+## ⚙️ How to Run Locally / Codespaces
 
 ### 1. Clone the repository
 
@@ -69,13 +75,18 @@ cd Whatsapp-Chat-Analyser
 pip install -r requirements.txt
 ```
 
-### 3. Start the app
+### 3. Run the Streamlit application
 
 ```bash
 streamlit run app.py
 ```
 
-The app opens at **`http://localhost:8501`** in your browser.
+For **GitHub Codespaces**, run:
+```bash
+streamlit run app.py --server.address=0.0.0.0 --server.port=8501
+```
+
+The application will open automatically at **`http://localhost:8501`** (or via the forwarded Codespaces port).
 
 ---
 
@@ -86,25 +97,25 @@ The app opens at **`http://localhost:8501`** in your browser.
 | **Android** | Open chat → Tap ⋮ (More) → **Export Chat** → **Without Media** |
 | **iOS** | Open chat → Tap contact/group name → **Export Chat** → **Without Media** |
 
-You'll receive a `.txt` file — upload it directly into the app.
+Upload the exported `.txt` file directly into the application.
 
 ---
 
 ## 📊 What You Can Analyze
 
-- **Message volume** — total messages, words, media, and links
-- **User activity** — who messages the most, with percentage breakdowns
-- **Temporal trends** — daily & monthly timelines to see chat growth over time
-- **Day & hour patterns** — heatmap of when your group is most active
-- **Vocabulary** — most commonly used words (stop-word filtered)
-- **Word cloud** — visual representation of dominant words
-- **Emoji usage** — which emojis fly the most and their distribution
+- **Message volume**: Total messages, words, media, and link counts
+- **User activity**: Who messages the most, with percentage breakdowns
+- **Temporal trends**: Daily and monthly timelines to track chat growth over time
+- **Day & hour patterns**: Heatmap of when your group is most active
+- **Vocabulary**: Most frequently used words (stop-word filtered)
+- **Word cloud**: Visual representation of dominant words
+- **Emoji usage**: Distribution and ranking of top emojis
 
 ---
 
 ## 🌐 Deployment
 
-Deployed on **Streamlit Community Cloud** — zero infrastructure needed.
+Production hosting is powered by **Streamlit Community Cloud**:
 
 | Setting | Value |
 |---|---|
@@ -125,4 +136,4 @@ Deployed on **Streamlit Community Cloud** — zero infrastructure needed.
 
 ## ⭐ Support
 
-If you find this project useful, please consider giving it a ⭐ on GitHub — it helps others discover it!
+If you find this project useful, please give it a ⭐ on GitHub!
