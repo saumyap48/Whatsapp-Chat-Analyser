@@ -24,7 +24,7 @@
 
 Try the fully deployed application:
 
-👉 **[WhatsApp Chat Analyzer](https://whatsapp-chat-analyser-bbsovk2yyknoynfeulappe.streamlit.app/)**
+👉 **[Try the WhatsApp Chat Analyzer Live](https://whatsapp-chat-analyser-bbsovk2yyknoynfeulappe.streamlit.app/)**
 
 The application is deployed using **Streamlit Community Cloud** with zero installation required.
 
