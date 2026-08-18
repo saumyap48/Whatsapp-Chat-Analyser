@@ -10,7 +10,6 @@ import {
   Clock,
   ArrowLeft,
   RefreshCw,
-  Sparkles,
 } from 'lucide-react';
 import api from '../api/api';
 import StatCard from '../components/StatCard';
@@ -28,48 +27,54 @@ import WordCloudView from '../charts/WordCloudView';
 export const DashboardPage = () => {
   const { analysisId } = useParams();
   const [selectedUser, setSelectedUser] = useState('Overall');
-  const [loading, setLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [filterLoading, setFilterLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
 
-  const fetchAnalytics = async (userToFetch = selectedUser) => {
-    setLoading(true);
+  const fetchAnalytics = async (userToFetch = selectedUser, isInitial = false) => {
+    if (isInitial) {
+      setInitialLoading(true);
+    } else {
+      setFilterLoading(true);
+    }
     setError(null);
+
     try {
       const response = await api.getFullAnalytics(analysisId, userToFetch);
       setData(response);
     } catch (err) {
       console.error('Failed to load analytics:', err);
-      const detail = err.response?.data?.detail || err.message || 'Unable to retrieve chat analysis data.';
-      setError(detail);
+      setError(err.message || 'Unable to retrieve chat analysis data.');
     } finally {
-      setLoading(false);
+      setInitialLoading(false);
+      setFilterLoading(false);
     }
   };
 
   useEffect(() => {
     if (analysisId) {
-      fetchAnalytics(selectedUser);
+      fetchAnalytics(selectedUser, !data);
     }
   }, [analysisId, selectedUser]);
 
-  if (loading && !data) {
+  if (initialLoading && !data) {
     return <LoadingState message="Processing WhatsApp Chat Insights..." />;
   }
 
-  if (error) {
-    return <ErrorState message={error} onRetry={() => fetchAnalytics(selectedUser)} />;
+  if (error && !data) {
+    return <ErrorState message={error} onRetry={() => fetchAnalytics(selectedUser, true)} />;
   }
 
   if (!data) {
-    return <ErrorState message="No data received for this analysis." />;
+    return <ErrorState message="No data received for this analysis." onRetry={() => fetchAnalytics(selectedUser, true)} />;
   }
 
   const { overview, users = [], monthly_timeline, daily_timeline, activity, heatmap, words, emojis } = data;
 
   return (
     <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-      {/* Dashboard Top Header */}
+      {/* Top Header & Breadcrumbs */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -82,42 +87,52 @@ export const DashboardPage = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <Link
             to="/"
-            style={{
-              padding: '8px 12px',
-              background: 'var(--bg-card-subtle)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: 'var(--radius-sm)',
-              color: 'var(--text-main)',
-              textDecoration: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '0.86rem',
-              fontWeight: 600,
-            }}
+            className="btn btn-secondary"
+            style={{ padding: '8px 14px', fontSize: '0.85rem' }}
+            aria-label="Back to Upload Page"
           >
             <ArrowLeft size={16} />
             <span>Upload New</span>
           </Link>
 
           <div>
-            <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
+            <h1 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
               Conversation Dashboard
             </h1>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
               <span>Filtering: <strong style={{ color: 'var(--primary)' }}>{selectedUser}</strong></span>
               <span>•</span>
               <span style={{ color: 'var(--secondary)' }}>{overview.total_messages.toLocaleString()} messages analyzed</span>
+              {filterLoading && (
+                <span style={{ color: 'var(--accent-amber)', fontSize: '0.75rem', fontWeight: 600 }}>
+                  (Updating...)
+                </span>
+              )}
             </div>
           </div>
         </div>
 
-        {/* User Filter Dropdown */}
-        <UserFilter
-          users={users}
-          selectedUser={selectedUser}
-          onSelectUser={(newVal) => setSelectedUser(newVal)}
-        />
+        {/* User Filter & Refresh */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <UserFilter
+            users={users}
+            selectedUser={selectedUser}
+            disabled={filterLoading}
+            onSelectUser={(newVal) => setSelectedUser(newVal)}
+          />
+
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => fetchAnalytics(selectedUser, false)}
+            disabled={filterLoading}
+            title="Refresh analytics data"
+            aria-label="Refresh analytics data"
+            style={{ padding: '8px 12px' }}
+          >
+            <RefreshCw size={16} className={filterLoading ? 'spin' : ''} style={filterLoading ? { animation: 'spin 1s linear infinite' } : {}} />
+          </button>
+        </div>
       </div>
 
       {/* Overview Stat Cards Grid */}
@@ -128,6 +143,7 @@ export const DashboardPage = () => {
           icon={MessageSquare}
           color="var(--primary)"
           subtitle={selectedUser === 'Overall' ? 'Across all members' : `Sent by ${selectedUser}`}
+          isLoading={filterLoading}
         />
         <StatCard
           title="Total Words"
@@ -135,6 +151,7 @@ export const DashboardPage = () => {
           icon={FileText}
           color="var(--secondary)"
           subtitle="Total vocabulary volume"
+          isLoading={filterLoading}
         />
         <StatCard
           title="Media Shared"
@@ -142,6 +159,7 @@ export const DashboardPage = () => {
           icon={Image}
           color="var(--accent-amber)"
           subtitle="Photos, videos, audio & docs"
+          isLoading={filterLoading}
         />
         <StatCard
           title="Links Shared"
@@ -149,6 +167,7 @@ export const DashboardPage = () => {
           icon={Link2}
           color="var(--accent-purple)"
           subtitle="Web URLs and hyperlinks"
+          isLoading={filterLoading}
         />
         <StatCard
           title="Chat Members"
@@ -156,6 +175,7 @@ export const DashboardPage = () => {
           icon={Users}
           color="var(--accent-rose)"
           subtitle="Identified participants"
+          isLoading={filterLoading}
         />
       </div>
 

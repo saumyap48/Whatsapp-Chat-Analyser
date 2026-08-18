@@ -13,8 +13,21 @@ import {
   ArrowRight,
   AlertCircle,
   HelpCircle,
+  PlayCircle,
 } from 'lucide-react';
 import api from '../api/api';
+
+const SAMPLE_CHAT_DATA = `12/05/2024, 10:30 am - Alice: Hey everyone! Welcome to the group 🎉
+12/05/2024, 10:31 am - Bob: Thanks Alice! Excited to collaborate on our project.
+12/05/2024, 10:32 am - Charlie: Great to be here. Did everyone check the new specs?
+12/05/2024, 10:33 am - Alice: Yes, check the official link: https://fastapi.tiangolo.com
+12/05/2024, 10:35 am - David: <Media omitted>
+12/05/2024, 10:36 am - Bob: Awesome diagram David! 👍😄
+12/05/2024, 11:00 am - Alice: Let's schedule a review meeting tomorrow.
+12/05/2024, 11:05 am - Charlie: Perfect, see you all tomorrow! 🚀
+13/05/2024, 09:15 am - Bob: Good morning team! Starting the build process now.
+13/05/2024, 09:30 am - Alice: Sounds great! Let me know if any assistance is needed.
+`;
 
 export const LandingPage = () => {
   const [file, setFile] = useState(null);
@@ -45,7 +58,7 @@ export const LandingPage = () => {
     }
 
     if (selectedFile.size > 50 * 1024 * 1024) {
-      setErrorMessage('File size exceeds 50MB limit.');
+      setErrorMessage('File size exceeds the 50MB limit.');
       return;
     }
 
@@ -66,8 +79,8 @@ export const LandingPage = () => {
     }
   };
 
-  const handleUpload = async () => {
-    if (!file) {
+  const handleUpload = async (fileToUpload = file) => {
+    if (!fileToUpload) {
       setErrorMessage('Please select a WhatsApp .txt export file first.');
       return;
     }
@@ -77,9 +90,9 @@ export const LandingPage = () => {
     setErrorMessage(null);
 
     try {
-      const response = await api.uploadChat(file, (progressEvent) => {
+      const response = await api.uploadChat(fileToUpload, (progressEvent) => {
         const percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / (progressEvent.total || file.size)
+          (progressEvent.loaded * 100) / (progressEvent.total || fileToUpload.size)
         );
         setUploadProgress(percentCompleted);
       });
@@ -87,20 +100,26 @@ export const LandingPage = () => {
       if (response && response.analysis_id) {
         navigate(`/dashboard/${response.analysis_id}`);
       } else {
-        throw new Error('Analysis ID was not returned by the server.');
+        throw new Error('Analysis session ID was not returned by the server.');
       }
     } catch (err) {
       console.error('Upload error:', err);
-      const detail = err.response?.data?.detail || err.message || 'Failed to upload and analyze chat file.';
-      setErrorMessage(detail);
+      setErrorMessage(err.message || 'Failed to upload and analyze chat file.');
       setUploading(false);
     }
   };
 
+  const handleLoadDemoChat = () => {
+    const blob = new Blob([SAMPLE_CHAT_DATA], { type: 'text/plain;charset=utf-8' });
+    const demoFile = new File([blob], 'demo_sample_chat.txt', { type: 'text/plain' });
+    setFile(demoFile);
+    handleUpload(demoFile);
+  };
+
   return (
-    <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
+    <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
       {/* Hero Section */}
-      <section style={{ textAlign: 'center', maxWidth: '820px', margin: '20px auto 0' }}>
+      <section style={{ textAlign: 'center', maxWidth: '820px', margin: '16px auto 0' }}>
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -115,11 +134,11 @@ export const LandingPage = () => {
           marginBottom: '20px',
         }}>
           <Sparkles size={16} />
-          <span>Next-Gen Analytics Engine</span>
+          <span>Full-Stack Analytics Platform</span>
         </div>
 
         <h1 style={{
-          fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
+          fontSize: 'clamp(2.3rem, 5vw, 3.6rem)',
           fontWeight: 800,
           letterSpacing: '-0.03em',
           lineHeight: 1.15,
@@ -134,7 +153,7 @@ export const LandingPage = () => {
         </h1>
 
         <p style={{
-          fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+          fontSize: 'clamp(1rem, 2vw, 1.18rem)',
           color: 'var(--text-muted)',
           lineHeight: 1.6,
           maxWidth: '680px',
@@ -151,12 +170,21 @@ export const LandingPage = () => {
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
+          tabIndex={0}
+          role="button"
+          aria-label="Upload WhatsApp chat export file"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              fileInputRef.current?.click();
+            }
+          }}
           style={{
             padding: '36px 28px',
             border: isDragging ? '2px dashed var(--primary)' : '1px solid var(--border-subtle)',
             background: isDragging ? 'rgba(37, 211, 102, 0.06)' : 'rgba(17, 27, 33, 0.85)',
             textAlign: 'center',
-            cursor: 'pointer',
+            cursor: uploading ? 'wait' : 'pointer',
             position: 'relative',
           }}
           onClick={() => !uploading && fileInputRef.current?.click()}
@@ -167,6 +195,7 @@ export const LandingPage = () => {
             onChange={handleFileChange}
             accept=".txt,text/plain"
             style={{ display: 'none' }}
+            aria-hidden="true"
           />
 
           <div style={{
@@ -194,7 +223,7 @@ export const LandingPage = () => {
               : 'Drag and drop your exported .txt chat file here, or click to browse'}
           </p>
 
-          {/* Action buttons */}
+          {/* Action Buttons */}
           <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
             <button
               type="button"
@@ -203,7 +232,7 @@ export const LandingPage = () => {
               onClick={(e) => {
                 e.stopPropagation();
                 if (file) {
-                  handleUpload();
+                  handleUpload(file);
                 } else {
                   fileInputRef.current?.click();
                 }
@@ -224,9 +253,23 @@ export const LandingPage = () => {
                 </>
               )}
             </button>
+
+            {!file && !uploading && (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleLoadDemoChat();
+                }}
+              >
+                <PlayCircle size={18} color="var(--secondary)" />
+                <span>Try Demo Chat</span>
+              </button>
+            )}
           </div>
 
-          {/* Progress bar */}
+          {/* Progress Bar */}
           {uploading && (
             <div style={{ marginTop: '20px', width: '100%', background: 'var(--bg-card-subtle)', height: '6px', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
               <div style={{
@@ -238,7 +281,7 @@ export const LandingPage = () => {
             </div>
           )}
 
-          {/* Error display */}
+          {/* Error Message */}
           {errorMessage && (
             <div style={{
               marginTop: '20px',
@@ -260,8 +303,8 @@ export const LandingPage = () => {
         </div>
       </section>
 
-      {/* Feature Grid */}
-      <section style={{ marginTop: '10px' }}>
+      {/* Feature Highlights Grid */}
+      <section>
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.02em' }}>
             Comprehensive Conversation Analytics
@@ -298,7 +341,7 @@ export const LandingPage = () => {
 
           <div className="glass-card" style={{ padding: '24px' }}>
             <div style={{ color: 'var(--accent-purple)', marginBottom: '12px' }}><Smile size={28} /></div>
-            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '6px' }}>Emoji Analysis</h4>
+            <h4 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '6px' }}>Emoji Sentiment</h4>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
               Deep sentiment through emoji distribution breakdown and top-used emoji charts.
             </p>
@@ -337,7 +380,7 @@ export const LandingPage = () => {
               <li>Tap the <strong>three dots (⋮)</strong> at the top right.</li>
               <li>Select <strong>More</strong> &gt; <strong>Export chat</strong>.</li>
               <li>Choose <strong>Without Media</strong>.</li>
-              <li>Save and upload the resulting <code style={{ color: 'var(--primary)' }}>.txt</code> file here.</li>
+              <li>Upload the resulting <code style={{ color: 'var(--primary)' }}>.txt</code> file here.</li>
             </ol>
           </div>
 

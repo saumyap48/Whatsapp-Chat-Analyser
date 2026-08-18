@@ -26,8 +26,9 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Robust CORS Configuration allowing local development
-origins = [
+# Robust CORS Configuration combining configured origins with local defaults
+configured_origins = settings.ALLOWED_ORIGINS if isinstance(settings.ALLOWED_ORIGINS, list) else [settings.ALLOWED_ORIGINS]
+local_origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://localhost:3000",
@@ -35,6 +36,7 @@ origins = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]
+origins = list(dict.fromkeys(configured_origins + local_origins))
 
 app.add_middleware(
     CORSMiddleware,

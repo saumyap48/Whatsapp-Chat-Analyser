@@ -47,6 +47,29 @@ Line 3 of message
     assert df.iloc[1]["user"] == "Bob"
 
 
+def test_parse_dot_and_hyphen_separators():
+    sample_dot = """12.05.2024, 10:35 pm - Alice: Dot formatted date
+12.05.2024, 10:36 pm - Bob: Acknowledged
+"""
+    df_dot = parse_whatsapp_text(sample_dot)
+    assert len(df_dot) == 2
+
+    sample_hyphen = """12-05-2024, 10:35 pm - Alice: Hyphen formatted date
+12-05-2024, 10:36 pm - Bob: Acknowledged
+"""
+    df_hyphen = parse_whatsapp_text(sample_hyphen)
+    assert len(df_hyphen) == 2
+
+
+def test_parse_unicode_hindi_and_special_spaces():
+    # iOS timestamps often contain \u202f (narrow no-break space)
+    sample_ios_special = "[12/05/24,\u202f10:35:12\u202fPM] Alice: नमस्ते दुनिया! कैसे हैं आप? 🙏\n[12/05/24,\u202f10:36:00\u202fPM] Bob: सब बढ़िया है!\n"
+    df = parse_whatsapp_text(sample_ios_special)
+    assert len(df) == 2
+    assert "नमस्ते" in df.iloc[0]["message"]
+    assert df.iloc[0]["user"] == "Alice"
+
+
 def test_parse_empty_and_invalid():
     assert parse_whatsapp_text("").empty
     assert parse_whatsapp_text("Just some random plain text").empty

@@ -21,17 +21,17 @@ export const UserLeaderboardChart = ({ users = [], selectedUser, onSelectUser })
   const topUsers = users.slice(0, 10);
 
   return (
-    <div className="glass-card" style={{ padding: '24px' }}>
+    <div className="glass-card" style={{ padding: '24px' }} role="region" aria-label="Member Participation Leaderboard">
       <div style={{ marginBottom: '18px' }}>
         <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px' }}>
           👥 Member Participation Leaderboard
         </h3>
         <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-          Top message contributors with percentage breakdown (Click any row to filter)
+          Top message contributors with percentage breakdown (Click any row or bar to filter)
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
         {/* Bar Chart */}
         <div style={{ width: '100%', height: '280px' }}>
           <ResponsiveContainer width="100%" height="100%">
@@ -44,7 +44,7 @@ export const UserLeaderboardChart = ({ users = [], selectedUser, onSelectUser })
                 stroke="var(--text-muted)"
                 fontSize={11}
                 tickLine={false}
-                width={80}
+                width={85}
               />
               <Tooltip
                 formatter={(val) => [`${val.toLocaleString()} msgs`, 'Volume']}
@@ -68,13 +68,15 @@ export const UserLeaderboardChart = ({ users = [], selectedUser, onSelectUser })
           </ResponsiveContainer>
         </div>
 
-        {/* User Table */}
-        <div style={{
-          maxHeight: '280px',
-          overflowY: 'auto',
-          borderRadius: 'var(--radius-sm)',
-          border: '1px solid var(--border-subtle)',
-        }}>
+        {/* User Table with Percentage Bars */}
+        <div
+          style={{
+            maxHeight: '280px',
+            overflowY: 'auto',
+            borderRadius: 'var(--radius-sm)',
+            border: '1px solid var(--border-subtle)',
+          }}
+        >
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.84rem' }}>
             <thead>
               <tr style={{ background: 'var(--bg-card-subtle)', borderBottom: '1px solid var(--border-subtle)', textAlign: 'left' }}>
@@ -89,18 +91,21 @@ export const UserLeaderboardChart = ({ users = [], selectedUser, onSelectUser })
                 return (
                   <tr
                     key={u.username}
+                    tabIndex={0}
+                    role="button"
+                    aria-pressed={isSelected}
                     onClick={() => onSelectUser(u.username)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onSelectUser(u.username);
+                      }
+                    }}
                     style={{
                       borderBottom: '1px solid rgba(134, 150, 160, 0.08)',
                       cursor: 'pointer',
-                      background: isSelected ? 'rgba(37, 211, 102, 0.12)' : 'transparent',
+                      background: isSelected ? 'rgba(37, 211, 102, 0.14)' : 'transparent',
                       transition: 'background var(--transition-fast)',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isSelected) e.currentTarget.style.background = 'var(--bg-card-hover)';
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isSelected) e.currentTarget.style.background = 'transparent';
                     }}
                   >
                     <td style={{ padding: '10px 12px', fontWeight: isSelected ? 700 : 500, color: isSelected ? 'var(--primary)' : 'var(--text-main)' }}>
@@ -109,8 +114,22 @@ export const UserLeaderboardChart = ({ users = [], selectedUser, onSelectUser })
                     <td style={{ padding: '10px 12px', color: 'var(--text-muted)' }}>
                       {u.message_count.toLocaleString()}
                     </td>
-                    <td style={{ padding: '10px 12px', fontWeight: 600, color: isSelected ? 'var(--primary)' : 'var(--text-main)' }}>
-                      {u.percentage}%
+                    <td style={{ padding: '10px 12px', minWidth: '100px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ flex: 1, background: 'var(--bg-card-subtle)', height: '6px', borderRadius: '3px', overflow: 'hidden' }}>
+                          <div
+                            style={{
+                              width: `${Math.min(u.percentage, 100)}%`,
+                              height: '100%',
+                              background: isSelected ? 'var(--primary)' : COLORS[i % COLORS.length],
+                              borderRadius: '3px',
+                            }}
+                          />
+                        </div>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: isSelected ? 'var(--primary)' : 'var(--text-muted)' }}>
+                          {u.percentage}%
+                        </span>
+                      </div>
                     </td>
                   </tr>
                 );
