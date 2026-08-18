@@ -1,13 +1,14 @@
 <h1 align="center">💬 WhatsApp Chat Analyzer</h1>
 
 <p align="center">
-  <strong>Turn your WhatsApp conversations into actionable data insights and interactive visualizations.</strong><br/>
-  Full-stack web application built with React, FastAPI, PostgreSQL, and advanced NLP parsing.
+  <strong>Turn raw WhatsApp conversations into actionable insights, behavioral metrics, and interactive visualizations.</strong><br/>
+  Production-grade full-stack web application built with React, Vite, FastAPI, PostgreSQL, and NLP analytics.
 </p>
 
 <p align="center">
+  <a href="https://whatsapp-chat-analyser-jet.vercel.app/"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo"/></a>
   <img src="https://img.shields.io/badge/Frontend-React%2018%20%2B%20Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React"/>
-  <img src="https://img.shields.io/badge/Backend-FastAPI%200.128-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/>
+  <img src="https://img.shields.io/badge/Backend-FastAPI%20%2B%20Python-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/>
   <img src="https://img.shields.io/badge/Database-PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL"/>
   <img src="https://img.shields.io/badge/Charts-Recharts-FF4B4B?style=for-the-badge" alt="Recharts"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"/>
@@ -15,9 +16,25 @@
 
 ---
 
+## 🚀 Live Demo
+
+Experience the live, production-deployed application:
+
+🔗 **[Live Demo](https://whatsapp-chat-analyser-jet.vercel.app/)**
+
+### Production Endpoints
+* **Frontend Web App**: [https://whatsapp-chat-analyser-jet.vercel.app/](https://whatsapp-chat-analyser-jet.vercel.app/)
+* **Backend REST API**: [https://whatsapp-chat-analyser-53ii.onrender.com/](https://whatsapp-chat-analyser-53ii.onrender.com/)
+* **API Health Check**: [https://whatsapp-chat-analyser-53ii.onrender.com/api/health](https://whatsapp-chat-analyser-53ii.onrender.com/api/health)
+* **Interactive Swagger Docs**: [https://whatsapp-chat-analyser-53ii.onrender.com/docs](https://whatsapp-chat-analyser-53ii.onrender.com/docs)
+
+---
+
 ## 🌟 Overview
 
-**WhatsApp Chat Analyzer** is a production-grade full-stack web application that parses exported WhatsApp chat files (`.txt`) and delivers comprehensive analytics. It processes messages across iOS and Android export formats, extracts timelines, participant contributions, weekly heatmaps, sentiment emojis, and word frequencies with Hinglish stop-word filtering.
+**WhatsApp Chat Analyzer** is a high-performance web platform designed to analyze, visualize, and extract meaningful patterns from exported WhatsApp conversation streams (`.txt`). 
+
+It accurately parses complex real-world export formats across Android and iOS devices (including 12-hour AM/PM, 24-hour formats, bracketed timestamps, Unicode emoji characters, and multiline text). Extracted messages are structured and stored in a relational PostgreSQL database to compute behavioral analytics, participant rankings, weekly heatmaps, sentiment distributions, and vocabulary trends.
 
 ---
 
@@ -25,15 +42,16 @@
 
 | Feature | Description |
 |---|---|
-| 📊 **Top Statistics** | Total message volume, word counts, media attachments, and link counts |
-| 👥 **Participant Leaderboard** | Message contribution breakdown, rank order, and interactive participant filtering |
-| 📅 **Monthly & Daily Timelines** | Historical volume trend lines and date-by-date conversation surges |
-| 🗓️ **Activity Heatmap** | 24×7 Day-of-week by Hour-of-day intensity matrix revealing peak chatting hours |
-| ☁️ **Interactive Word Cloud** | Dominant keywords with size-proportional typography and hover tooltips |
-| 🔤 **Ranked Vocabulary** | Top 25 words with custom Hinglish and common stop-word filtering |
-| 😂 **Emoji Sentiment** | Donut chart and breakdown of top emojis used throughout the chat |
-| 🔍 **Individual Participant Filter** | Zoom in on any individual participant or analyze the whole group |
-| 📱 **Cross-Platform Format Support** | Android & iOS exports (12-hour AM/PM and 24-hour timestamp formats) |
+| 📊 **High-Level Statistics** | Total message volume, word counts, media attachments, and shared web links |
+| 👥 **Participant Leaderboards** | Message contribution breakdown, ranking order, and interactive participant filtering |
+| 📅 **Monthly & Daily Timelines** | Historical volume trend lines and date-by-date conversation surge graphs |
+| 🗓️ **24×7 Activity Heatmap** | Day-of-week by hour-of-day matrix uncovering peak chatting patterns |
+| ☁️ **Interactive Word Cloud** | Dominant keywords with size-proportional typography and occurrence tooltips |
+| 🔤 **Ranked Vocabulary** | Top 25 vocabulary terms with custom Hinglish and English stop-word filtering |
+| 😂 **Emoji Sentiment Analytics** | Donut charts and frequency rankings of top emojis used across the chat |
+| 🔍 **Dynamic Participant Filtering** | Analyze the group as a whole or drill down into any individual participant |
+| 📱 **Universal Format Engine** | Robust regex parser supporting Android & iOS exports (12-hour AM/PM & 24-hour) |
+| ⚡ **One-Click Demo Chat** | Instantly explore full dashboard features with built-in realistic sample data |
 
 ---
 
@@ -44,7 +62,7 @@
 |                 React.js Frontend (Vite)                   |
 |  Recharts • Lucide Icons • Glassmorphic Dark UI • Responsive|
 +-------------------------------------------------------------+
-                              |  HTTP / REST JSON (Axios)
+                              |  HTTPS / REST JSON (Axios)
                               v
 +-------------------------------------------------------------+
 |                     FastAPI Backend                         |
@@ -63,9 +81,63 @@
 
 ### Technology Breakdown
 
-- **Frontend**: React 18, JavaScript, Vite, Recharts, Lucide React, Axios, CSS3 (Custom WhatsApp Dark Theme)
-- **Backend**: Python 3.11+, FastAPI, Pydantic v2, Uvicorn, Pandas, URLExtract, Emoji
-- **Database & ORM**: PostgreSQL, SQLAlchemy 2.0, Alembic Migrations
+* **Frontend**:
+  * **React 18** & **Vite**
+  * **JavaScript (ES6+)**
+  * **React Router DOM**
+  * **Recharts** (Interactive SVG/HTML5 charts)
+  * **Lucide React** (Modern iconography)
+  * **Axios** (Configured HTTP client with interceptors)
+  * **Vanilla CSS3** (Custom WhatsApp-inspired Dark Theme & Glassmorphism)
+  * **Hosted on Vercel**
+
+* **Backend**:
+  * **Python 3.12**
+  * **FastAPI** (High-performance async ASGI web framework)
+  * **Uvicorn** (Production ASGI server)
+  * **SQLAlchemy 2.0** (ORM & connection pooling)
+  * **Alembic** (Database schema migrations)
+  * **Pandas** (High-speed vector analytics & aggregation)
+  * **psycopg2-binary** (PostgreSQL driver)
+  * **URLExtract** & **Emoji** (NLP tokenization & extraction)
+  * **Hosted on Render**
+
+* **Database**:
+  * **PostgreSQL**
+  * **Hosted on Render**
+
+---
+
+## 🌐 Deployment
+
+The application is deployed across a modern cloud-native architecture:
+
+```
+Vercel
+  │ (Static Hosting & Edge CDN)
+  ▼
+React + Vite Frontend
+  │
+  │ HTTPS REST API
+  ▼
+Render
+  │ (Web Service Runtime)
+  ▼
+FastAPI Backend
+  │
+  ▼
+SQLAlchemy ORM
+  │
+  ▼
+PostgreSQL Database (Render Managed)
+```
+
+### Production Configuration
+* **Frontend-to-Backend Communication**: The React application communicates with the FastAPI backend through the environment variable:
+  ```env
+  VITE_API_URL=https://whatsapp-chat-analyser-53ii.onrender.com
+  ```
+* **Production CORS**: FastAPI's `CORSMiddleware` is configured to allow requests from `https://whatsapp-chat-analyser-jet.vercel.app` (and local development ports), ensuring secure cross-origin communication for all endpoints, preflight `OPTIONS` checks, and error responses.
 
 ---
 
@@ -76,27 +148,25 @@ Whatsapp-Chat-Analyser/
 ├── backend/
 │   ├── app/
 │   │   ├── __init__.py
-│   │   ├── main.py               # FastAPI entrypoint & middleware
-│   │   ├── config.py             # Pydantic environment configuration
-│   │   ├── database.py           # SQLAlchemy database connection
-│   │   ├── models.py             # SQLAlchemy ORM models
-│   │   ├── schemas.py            # Pydantic request/response schemas
+│   │   ├── main.py               # FastAPI entrypoint & CORS middleware
+│   │   ├── config.py             # Pydantic Settings environment configuration
+│   │   ├── database.py           # SQLAlchemy database connection & session
+│   │   ├── models.py             # SQLAlchemy ORM models (AnalysisSession, ChatUser, Message)
+│   │   ├── schemas.py            # Pydantic request & response schemas
 │   │   ├── data/
 │   │   │   └── stop_hinglish.txt # Stop-words dictionary
 │   │   ├── routers/
-│   │   │   ├── __init__.py
 │   │   │   ├── health.py         # GET /api/health
 │   │   │   ├── upload.py         # POST /api/upload
 │   │   │   └── analytics.py      # GET /api/analytics/...
 │   │   └── services/
-│   │       ├── __init__.py
 │   │       ├── parser.py         # WhatsApp text parsing engine
 │   │       ├── analytics.py      # Core metrics & timeline calculations
 │   │       ├── word_service.py   # NLP word extraction & stop-words
 │   │       └── emoji_service.py  # Emoji distribution & frequency
-│   ├── alembic/                  # Database migration scripts
+│   ├── alembic/                  # Database migration versions & env
 │   ├── tests/                    # Pytest unit & integration test suite
-│   ├── requirements.txt
+│   ├── requirements.txt          # Python dependencies
 │   ├── alembic.ini
 │   └── .env.example
 │
@@ -121,29 +191,31 @@ Whatsapp-Chat-Analyser/
 │   │   │   ├── WordFrequencyChart.jsx
 │   │   │   └── WordCloudView.jsx
 │   │   ├── pages/
-│   │   │   ├── LandingPage.jsx   # Hero, file uploader, export guide
-│   │   │   └── DashboardPage.jsx # Full-featured analytics dashboard
+│   │   │   ├── LandingPage.jsx   # Hero, uploader, demo loader & export guide
+│   │   │   └── DashboardPage.jsx # Interactive multi-widget dashboard
 │   │   ├── App.jsx               # React Router configuration
 │   │   ├── main.jsx              # DOM root mount
-│   │   └── index.css             # Design tokens & responsive styles
+│   │   └── index.css             # Dark theme design system & animations
 │   ├── package.json
 │   ├── vite.config.js
 │   └── .env.example
 │
 ├── database/
-│   └── README.md                 # Entity relationship diagram & migrations
+│   └── README.md                 # Entity relationship diagram & schema details
+├── .env.example
+├── .python-version
 ├── .gitignore
 └── README.md
 ```
 
 ---
 
-## 🚀 How to Run Locally
+## 💻 Local Development Setup
 
 ### 1. Prerequisites
-- **Python 3.11+**
-- **Node.js 18+ and npm**
-- **PostgreSQL** running locally
+* **Python 3.11+ / 3.12+**
+* **Node.js 18+ and npm**
+* **PostgreSQL** running locally
 
 ---
 
@@ -162,11 +234,10 @@ CREATE DATABASE whatsapp_analyzer;
 ```bash
 cd backend
 
-# Create virtual environment
+# Create and activate virtual environment
 python -m venv venv
 
-# Activate virtual environment
-# On Windows (PowerShell / Command Prompt):
+# On Windows (PowerShell):
 venv\Scripts\activate
 # On Linux / macOS:
 source venv/bin/activate
@@ -178,19 +249,16 @@ pip install -r requirements.txt
 copy .env.example .env    # Windows
 # or: cp .env.example .env # Linux/macOS
 
-# Edit .env if your PostgreSQL username/password is different:
-# DATABASE_URL=postgresql+psycopg2://postgres:your_password@localhost:5432/whatsapp_analyzer
-
 # Run database migrations (tables also auto-create on startup)
 alembic upgrade head
 
 # Start FastAPI development server
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-- **Backend API**: `http://localhost:8000`
-- **Interactive Swagger Docs**: `http://localhost:8000/docs`
-- **Health Check**: `http://localhost:8000/api/health`
+* **Backend API**: `http://localhost:8000`
+* **Swagger API Docs**: `http://localhost:8000/docs`
+* **Health Check**: `http://localhost:8000/api/health`
 
 ---
 
@@ -201,18 +269,18 @@ In a new terminal:
 ```bash
 cd frontend
 
-# Install npm packages
+# Install dependencies
 npm install
 
 # Configure environment file
 copy .env.example .env    # Windows
 # or: cp .env.example .env # Linux/macOS
 
-# Start Vite React development server
+# Start Vite React dev server
 npm run dev
 ```
 
-- **Frontend Web App**: `http://localhost:5173`
+* **Frontend Web App**: `http://localhost:5173`
 
 ---
 
@@ -220,19 +288,19 @@ npm run dev
 
 | Method | Path | Description |
 |---|---|---|
-| `GET` | `/api/health` | Health check & service readiness |
+| `GET` | `/api/health` | Service health status & version |
 | `POST` | `/api/upload` | Upload and parse WhatsApp export `.txt` file |
-| `GET` | `/api/analytics/full/{analysis_id}` | Complete analytics payload for one-step dashboard hydration |
+| `GET` | `/api/analytics/full/{analysis_id}` | Complete analytics bundle for dashboard hydration |
 | `GET` | `/api/analytics/overview/{analysis_id}` | Message count, word count, media count, links count |
 | `GET` | `/api/analytics/users/{analysis_id}` | Participant leaderboard and percentage contribution |
-| `GET` | `/api/analytics/timeline/monthly/{analysis_id}` | Monthly message volume |
-| `GET` | `/api/analytics/timeline/daily/{analysis_id}` | Daily message volume |
+| `GET` | `/api/analytics/timeline/monthly/{analysis_id}` | Monthly message volume progression |
+| `GET` | `/api/analytics/timeline/daily/{analysis_id}` | Daily message volume points |
 | `GET` | `/api/analytics/activity/{analysis_id}` | Busiest day of week & busiest month |
 | `GET` | `/api/analytics/heatmap/{analysis_id}` | 24×7 Day-of-week by Hour activity matrix |
 | `GET` | `/api/analytics/words/{analysis_id}` | Most common words & word cloud coordinates |
-| `GET` | `/api/analytics/emojis/{analysis_id}` | Emoji frequency and sentiment distribution |
+| `GET` | `/api/analytics/emojis/{analysis_id}` | Emoji frequency and sentiment breakdown |
 
-*All analytics endpoints support an optional `?user=<Username>` query parameter to filter by a specific chat participant.*
+*All analytics endpoints support an optional `?user=<Username>` query parameter to filter metrics for any individual participant.*
 
 ---
 
@@ -256,14 +324,15 @@ npm run build
 
 1. **Android**: Open chat → Tap **⋮ (More)** → **Export Chat** → Select **Without Media**.
 2. **iOS**: Open chat → Tap contact/group header → **Export Chat** → Select **Without Media**.
-3. Upload the exported `.txt` file directly on the landing page.
+3. Upload the resulting `.txt` file on the web application.
 
 ---
 
 ## 👩‍💻 Author
 
 **Saumya Pandey**
-- GitHub: [@saumyap48](https://github.com/saumyap48)
+* GitHub: [@saumyap48](https://github.com/saumyap48)
+* Repository: [saumyap48/Whatsapp-Chat-Analyser](https://github.com/saumyap48/Whatsapp-Chat-Analyser)
 
 ---
 
