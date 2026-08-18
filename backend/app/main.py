@@ -27,7 +27,11 @@ app = FastAPI(
 )
 
 # Robust CORS Configuration combining configured origins with local defaults
-configured_origins = settings.ALLOWED_ORIGINS if isinstance(settings.ALLOWED_ORIGINS, list) else [settings.ALLOWED_ORIGINS]
+configured_origins = (
+    settings.ALLOWED_ORIGINS
+    if isinstance(settings.ALLOWED_ORIGINS, list)
+    else [settings.ALLOWED_ORIGINS]
+)
 local_origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
@@ -35,31 +39,39 @@ local_origins = [
     "http://127.0.0.1:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "https://whatsapp-chat-analyser-jet.vercel.app",
 ]
-origins = list(dict.fromkeys(configured_origins + local_origins))
+origins = list(dict.fromkeys([o.strip().rstrip("/") for o in (configured_origins + local_origins) if o and isinstance(o, str)]))
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?",
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?|https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    origin = request.headers.get("origin", "*")
-    return JSONResponse(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"detail": f"Server processing error: {str(exc)}"},
-        headers={
+def get_cors_headers(request: Request) -> dict:
+    origin = request.headers.get("origin")
+    if origin:
+        return {
             "Access-Control-Allow-Origin": origin,
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Methods": "*",
             "Access-Control-Allow-Headers": "*",
         }
+    return {}
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": f"Server processing error: {str(exc)}"},
+        headers=get_cors_headers(request),
     )
 
 

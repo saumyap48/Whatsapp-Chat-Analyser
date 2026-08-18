@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const rawBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = rawBaseUrl.replace(/\/+$/, '');
 
 const client = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Accept': 'application/json',
   },
-  timeout: 30000, // 30 second timeout
+  timeout: 45000, // 45 second timeout for cold starts and large files
 });
 
 // Response interceptor for unified, user-friendly error formatting
