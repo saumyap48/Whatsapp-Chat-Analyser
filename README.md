@@ -8,7 +8,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Frontend-React%2018%20%2B%20Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React"/>
   <img src="https://img.shields.io/badge/Backend-FastAPI%200.128-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/>
-  <img src="https://img.shields.io/badge/Database-PostgreSQL%2015-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL"/>
+  <img src="https://img.shields.io/badge/Database-PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL"/>
   <img src="https://img.shields.io/badge/Charts-Recharts-FF4B4B?style=for-the-badge" alt="Recharts"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"/>
 </p>
@@ -44,7 +44,7 @@
 |                 React.js Frontend (Vite)                   |
 |  Recharts • Lucide Icons • Glassmorphic Dark UI • Responsive|
 +-------------------------------------------------------------+
-                              |  HTTP / REST JSON
+                              |  HTTP / REST JSON (Axios)
                               v
 +-------------------------------------------------------------+
 |                     FastAPI Backend                         |
@@ -63,10 +63,9 @@
 
 ### Technology Breakdown
 
-- **Frontend**: React 18, Vite, Recharts, Lucide React, Axios, Vanilla CSS3 (Custom WhatsApp Dark Theme)
+- **Frontend**: React 18, JavaScript, Vite, Recharts, Lucide React, Axios, CSS3 (Custom WhatsApp Dark Theme)
 - **Backend**: Python 3.11+, FastAPI, Pydantic v2, Uvicorn, Pandas, URLExtract, Emoji
-- **Database & ORM**: PostgreSQL 15, SQLAlchemy 2.0, Alembic Migrations
-- **Containerization**: Docker, Docker Compose
+- **Database & ORM**: PostgreSQL, SQLAlchemy 2.0, Alembic Migrations
 
 ---
 
@@ -97,7 +96,6 @@ Whatsapp-Chat-Analyser/
 │   │       └── emoji_service.py  # Emoji distribution & frequency
 │   ├── alembic/                  # Database migration scripts
 │   ├── tests/                    # Pytest unit & integration test suite
-│   ├── Dockerfile
 │   ├── requirements.txt
 │   ├── alembic.ini
 │   └── .env.example
@@ -128,82 +126,93 @@ Whatsapp-Chat-Analyser/
 │   │   ├── App.jsx               # React Router configuration
 │   │   ├── main.jsx              # DOM root mount
 │   │   └── index.css             # Design tokens & responsive styles
-│   ├── Dockerfile
 │   ├── package.json
 │   ├── vite.config.js
 │   └── .env.example
 │
 ├── database/
 │   └── README.md                 # Entity relationship diagram & migrations
-├── docker-compose.yml            # Complete stack compose configuration
 ├── .gitignore
 └── README.md
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 How to Run Locally
 
-### Option 1: Run with Docker Compose (Recommended)
-
-Start the database, backend API, and frontend web server in one command:
-
-```bash
-docker compose up --build
-```
-
-- **Frontend Application**: `http://localhost:3000`
-- **FastAPI Backend & Swagger Docs**: `http://localhost:8000/docs`
-- **PostgreSQL Database**: `localhost:5432`
+### 1. Prerequisites
+- **Python 3.11+**
+- **Node.js 18+ and npm**
+- **PostgreSQL** running locally
 
 ---
 
-### Option 2: Run Locally (Development Mode)
+### 2. Database Setup
 
-#### 1. Prerequisites
-- Python 3.11+
-- Node.js 18+ and npm
-- PostgreSQL (or use `docker run -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres:15`)
+Ensure PostgreSQL is running and create a database named `whatsapp_analyzer`:
 
-#### 2. Backend Setup
+```sql
+CREATE DATABASE whatsapp_analyzer;
+```
+
+---
+
+### 3. Backend Setup
+
 ```bash
 cd backend
 
-# Create and activate virtual environment
+# Create virtual environment
 python -m venv venv
-# Windows:
-.\venv\Scripts\activate
-# Linux/macOS:
+
+# Activate virtual environment
+# On Windows (PowerShell / Command Prompt):
+venv\Scripts\activate
+# On Linux / macOS:
 source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Configure environment variables
-cp .env.example .env
+# Configure environment file
+copy .env.example .env    # Windows
+# or: cp .env.example .env # Linux/macOS
 
-# Run database migrations (optional, tables auto-create on startup)
+# Edit .env if your PostgreSQL username/password is different:
+# DATABASE_URL=postgresql+psycopg2://postgres:your_password@localhost:5432/whatsapp_analyzer
+
+# Run database migrations (tables also auto-create on startup)
 alembic upgrade head
 
 # Start FastAPI development server
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn app.main:app --reload
 ```
 
-#### 3. Frontend Setup
+- **Backend API**: `http://localhost:8000`
+- **Interactive Swagger Docs**: `http://localhost:8000/docs`
+- **Health Check**: `http://localhost:8000/api/health`
+
+---
+
+### 4. Frontend Setup
+
+In a new terminal:
+
 ```bash
 cd frontend
 
-# Install npm dependencies
+# Install npm packages
 npm install
 
-# Configure environment variables
-cp .env.example .env
+# Configure environment file
+copy .env.example .env    # Windows
+# or: cp .env.example .env # Linux/macOS
 
-# Start Vite dev server
+# Start Vite React development server
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+- **Frontend Web App**: `http://localhost:5173`
 
 ---
 
