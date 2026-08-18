@@ -10,11 +10,12 @@ from .routers import health, upload, analytics
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Ensure tables exist on startup
+    # Auto-create tables on startup if they don't exist
     try:
         Base.metadata.create_all(bind=engine)
+        print("Database schema verified.")
     except Exception as e:
-        print(f"Database initialization notice: {e}")
+        print(f"Database startup check: {e}")
     yield
 
 
@@ -25,22 +26,38 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS Configuration
+# Robust CORS Configuration allowing local development
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS if settings.ALLOWED_ORIGINS else ["*"],
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
+    allow_origins=origins,
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+)(:\d+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Exception handlers for clean JSON responses
+
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
+    origin = request.headers.get("origin", "*")
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"detail": "An unexpected server error occurred. Please check your data and try again."}
+        content={"detail": f"Server processing error: {str(exc)}"},
+        headers={
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        }
     )
 
 

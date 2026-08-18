@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import APIRouter, UploadFile, File, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 import pandas as pd
@@ -80,14 +80,16 @@ async def upload_chat_file(
     analysis_session = AnalysisSession(
         id=session_id,
         filename=file.filename,
-        uploaded_at=datetime.utcnow(),
+        uploaded_at=datetime.now(timezone.utc),
         message_count=total_messages,
         user_count=user_count
     )
     db.add(analysis_session)
+    db.commit()  # Commit parent session first
 
     # 8. Persist ChatUser records
     user_map = {}
+    db_users = []
     for username, count in user_counts.items():
         user_id = uuid.uuid4()
         chat_user = ChatUser(
@@ -96,10 +98,14 @@ async def upload_chat_file(
             username=username,
             message_count=int(count)
         )
-        db.add(chat_user)
+        db_users.append(chat_user)
         user_map[username] = user_id
 
-    # 9. Persist Messages (batch)
+    if db_users:
+        db.add_all(db_users)
+        db.commit()  # Commit users
+
+    # 9. Persist Messages
     db_messages = []
     for _, row in df.iterrows():
         msg_user = row["user"]
@@ -117,9 +123,9 @@ async def upload_chat_file(
         )
         db_messages.append(db_msg)
 
-    db.bulk_save_objects(db_messages)
-    db.commit()
-    db.refresh(analysis_session)
+    if db_messages:
+        db.add_all(db_messages)
+        db.commit()  # Commit messages
 
     return SessionCreateResponse(
         analysis_id=analysis_session.id,
